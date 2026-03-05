@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purevibe - Elevated Wellness</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&display=swap');
+
+        :root {
+            --bg-color: #030303;
+            --text-main: #f5f5f7;
+            --accent: #d4af37;
+        }
+
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            /* Prevent native scrolling completely */
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            touch-action: none;
+            /* Crucial for preventing mobile scroll bounce */
+        }
+
+        h1,
+        h2,
+        h3,
+        .serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* --- Nav & UI Overlays --- */
+        #menu-toggle {
+            position: fixed;
+            top: 4vh;
+            left: 5vw;
+            z-index: 1000;
+            cursor: pointer;
+            width: 35px;
+            height: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        #menu-toggle span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background: #fff;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        #menu-toggle.active span:nth-child(1) {
+            transform: translateY(11px) rotate(45deg);
+        }
+
+        #menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        #menu-toggle.active span:nth-child(3) {
+            transform: translateY(-11px) rotate(-45deg);
+        }
+
+        /* Sidebar Navigation */
+        #sidebar {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 350px;
+            height: 100vh;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 999;
+            transition: left 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-left: 5vw;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        #sidebar.active {
+            left: 0;
+        }
+
+        .nav-link {
+            font-size: 2.5rem;
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            margin: 1rem 0;
+            font-weight: 300;
+            transition: color 0.3s ease, transform 0.3s ease, padding-left 0.3s ease;
+            display: block;
+        }
+
+        .nav-link:hover,
+        .nav-link.active-link {
+            color: var(--accent);
+            padding-left: 10px;
+        }
+
+        @media (max-width: 768px) {
+            #sidebar {
+                width: 100%;
+                left: -100%;
+                align-items: center;
+                padding-left: 0;
+            }
+
+            .nav-link {
+                text-align: center;
+                font-size: 2rem;
+            }
+
+            .nav-link:hover,
+            .nav-link.active-link {
+                padding-left: 0;
+                transform: scale(1.05);
+            }
+        }
+
+        /* Back to Top Button */
+        #back-to-top {
+            position: fixed;
+            bottom: 4vh;
+            right: 5vw;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            color: #fff;
+            font-size: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 900;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease, transform 0.3s ease, background 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        #back-to-top.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #back-to-top:hover {
+            background: var(--accent);
+            transform: translateY(-5px);
+        }
+
+        /* Fixed Container for Parallax Images */
+        #sticky-products {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .prod-wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            /* GSAP origin is absolute center */
+            z-index: 1;
+        }
+
+        .prod-img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            /* Offset internally */
+            transform: translate(-50%, -50%);
+            height: 65vh;
+            max-width: 90vw;
+            width: auto;
+            object-fit: contain;
+            will-change: transform, opacity, filter;
+            transition: filter 0.8s ease;
+            filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.6));
+        }
+
+        @keyframes float1 {
+
+            0%,
+            100% {
+                transform: translate(-50%, -50%);
+            }
+
+            50% {
+                transform: translate(-50%, calc(-50% - 15px));
+            }
+        }
+
+        @keyframes float2 {
+
+            0%,
+            100% {
+                transform: translate(-50%, -50%);
+            }
+
+            50% {
+                transform: translate(-50%, calc(-50% - 20px));
+            }
+        }
+
+        @keyframes float3 {
+
+            0%,
+            100% {
+                transform: translate(-50%, -50%);
+            }
+
+            50% {
+                transform: translate(-50%, calc(-50% - 12px));
+            }
+        }
+
+        @keyframes float4 {
+
+            0%,
+            100% {
+                transform: translate(-50%, -50%);
+            }
+
+            50% {
+                transform: translate(-50%, calc(-50% - 18px));
+            }
+        }
+
+        .floating-1 {
+            animation: float1 4s ease-in-out infinite;
+        }
+
+        .floating-2 {
+            animation: float2 3.5s ease-in-out infinite 0.5s;
+        }
+
+        .floating-3 {
+            animation: float3 4.2s ease-in-out infinite 1s;
+        }
+
+        .floating-4 {
+            animation: float4 3.8s ease-in-out infinite 1.5s;
+        }
+
+        .prod-img.active {
+            filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 50px rgba(255, 255, 255, 0.15));
+        }
+
+        /* Background element managed by GSAP */
+        #bg-element {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            background-color: var(--bg-color);
+            /* Start color */
+        }
+
+        /* Slides Container */
+        #slides-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            z-index: 10;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            padding: 0 10vw;
+            box-sizing: border-box;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        .flex-center {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .flex-left {
+            justify-content: flex-start;
+            align-items: center;
+            text-align: left;
+        }
+
+        .flex-right {
+            justify-content: flex-end;
+            align-items: center;
+            text-align: right;
+        }
+
+        .content {
+            max-width: 550px;
+        }
+
+        /* Typography Upgrades */
+        .title {
+            font-size: 6rem;
+            font-weight: 700;
+            letter-spacing: -2px;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: #888;
+            font-weight: 300;
+            margin-bottom: 3rem;
+        }
+
+        .prod-tag {
+            font-size: 4rem;
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            font-weight: 400;
+        }
+
+        .green-tag {
+            color: #a8e6cf;
+        }
+
+        .pink-tag {
+            color: #ffb7b2;
+        }
+
+        .red-tag {
+            color: #ff8b94;
+        }
+
+        .purple-tag {
+            color: #d0bdf4;
+        }
+
+        p.desc {
+            font-size: 1.25rem;
+            line-height: 1.6;
+            color: #999;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+
+        /* Pagination */
+        #pagination {
+            position: fixed;
+            right: 3vw;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 50;
+        }
+
+        .dot {
+            width: 1px;
+            height: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.4s ease;
+        }
+
+        .dot.active {
+            height: 40px;
+            background: rgba(255, 255, 255, 1);
+        }
+
+        /* Swipe indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 5vh;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            opacity: 0.3;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: translate(-50%, 0);
+                opacity: 0.2;
+            }
+
+            50% {
+                transform: translate(-50%, 10px);
+                opacity: 0.8;
+            }
+        }
+
+        /* Partners & News */
+        .partners-grid {
+            display: flex;
+            gap: 3rem;
+            margin-top: 4rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .partner-logo {
+            font-size: 1.5rem;
+            color: #555;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+            text-align: left;
+        }
+
+        .news-item {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .news-item:hover {
+            padding-left: 10px;
+        }
+
+        .news-item span {
+            display: inline-block;
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--accent);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .news-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .news-item p {
+            color: #aaa;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        /* Modern Layout Setup for 5, 6, 7 */
+        .modern-card {
+            padding: 3rem;
+            text-align: left;
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 3rem;
+            }
+
+            .subtitle {
+                font-size: 0.8rem;
+                letter-spacing: 3px;
+                margin-bottom: 2rem;
+            }
+
+            .prod-tag {
+                font-size: 2.2rem;
+                margin-bottom: 1rem;
+            }
+
+            p.desc {
+                font-size: 0.95rem;
+            }
+
+            .slide {
+                padding: 0 5vw;
+            }
+
+            /* Slide 0 adjustments */
+            #slide-0 {
+                flex-direction: column !important;
+                justify-content: center !important;
+                align-items: center !important;
+            }
+
+            /* Product slides 1-4 */
+            #slide-1,
+            #slide-2,
+            #slide-3,
+            #slide-4 {
+                flex-direction: column !important;
+                justify-content: flex-end !important;
+                align-items: center !important;
+                padding-bottom: 12vh;
+            }
+
+            .content {
+                text-align: center !important;
+                width: 100%;
+            }
+
+            .content.text-right,
+            .content.text-left {
+                text-align: center !important;
+            }
+
+            #slide-1 .content,
+            #slide-2 .content,
+            #slide-3 .content,
+            #slide-4 .content {
+                background: transparent;
+                padding: 1rem 0;
+                width: 100%;
+                border: none;
+                backdrop-filter: none;
+                -webkit-backdrop-filter: none;
+            }
+
+            .prod-img {
+                height: 35vh;
+                max-width: 80vw;
+            }
+
+            /* Slide 5 Typography */
+            #slide-5 {
+                padding: 0 4vw;
+                justify-content: center !important;
+            }
+
+            #slide-5 .content {
+                padding-top: 5vh;
+            }
+
+            .modern-card {
+                padding: 1.5rem 1rem !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+                text-align: left !important;
+            }
+
+            #slide-5 h2 {
+                font-size: 1.8rem !important;
+                margin-bottom: 0.8rem !important;
+                line-height: 1.2 !important;
+                text-align: left;
+            }
+
+            #slide-5 p.desc {
+                font-size: 1rem !important;
+                margin-bottom: 1.2rem !important;
+                line-height: 1.6 !important;
+                text-align: left;
+                color: #ddd;
+            }
+
+            #slide-5 p.serif {
+                font-size: 1.1rem !important;
+                margin-top: 2rem !important;
+                line-height: 1.4 !important;
+                text-align: left;
+                border-left: 2px solid var(--accent);
+                padding-left: 15px;
+            }
+
+            /* Slide 6 Typography */
+            #slide-6 {
+                justify-content: center !important;
+                padding-top: 5vh;
+                padding: 0 5vw;
+            }
+
+            #slide-6 h2 {
+                font-size: 2.2rem !important;
+                margin-bottom: 0.5rem !important;
+                text-align: left;
+            }
+
+            #slide-6 p {
+                font-size: 1rem !important;
+                text-align: left;
+                color: #aaa;
+            }
+
+            .partners-grid {
+                gap: 1rem;
+                margin-top: 2rem;
+            }
+
+            .partner-logo {
+                font-size: 0.9rem;
+                padding: 1rem !important;
+                text-align: center;
+                width: calc(50% - 0.5rem);
+                box-sizing: border-box;
+            }
+
+            /* Slide 7 Typography */
+            #slide-7 {
+                justify-content: center !important;
+                padding-top: 5vh !important;
+                padding: 0 5vw;
+            }
+
+            #slide-7 h2 {
+                font-size: 1.8rem !important;
+                margin-bottom: 0.2rem !important;
+            }
+
+            #slide-7>.content>p {
+                font-size: 0.9rem !important;
+                margin-bottom: 1rem !important;
+            }
+
+            .news-grid {
+                grid-template-columns: 1fr;
+                gap: 0.8rem;
+                margin-top: 0.5rem;
+            }
+
+            .news-item {
+                padding-top: 0.5rem;
+            }
+
+            .news-item span {
+                font-size: 0.75rem;
+                margin-bottom: 0.2rem;
+            }
+
+            .news-item h3 {
+                font-size: 1.1rem;
+                margin-bottom: 0.2rem;
+            }
+
+            .news-item p {
+                font-size: 0.85rem;
+                line-height: 1.3;
+            }
+
+            #pagination {
+                right: 3px;
+                transform: translateY(-50%) scale(0.8);
+            }
+
+            .scroll-indicator {
+                bottom: 3vh;
+            }
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+</head>
+
+<body>
+    <!-- Dynamic Background Layer -->
+    <div id="bg-element"></div>
+
+    <!-- UI Elements -->
+    <div id="menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <nav id="sidebar">
+        <a href="#" class="nav-link serif" data-slide="1">Products</a>
+        <a href="#" class="nav-link serif" data-slide="5">Brand Story</a>
+        <a href="#" class="nav-link serif" data-slide="7">Journal</a>
+    </nav>
+
+    <div id="back-to-top">&#8593;</div>
+
+    <!-- Pagination Dots -->
+    <div id="pagination">
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+    </div>
+
+    <div id="sticky-products">
+        <div class="prod-wrapper" id="wrap-1" style="opacity: 0;">
+            <img src="product_green_1772632314897_transparent.png" class="prod-img floating-1" alt="Good Shot Jelly">
+        </div>
+        <div class="prod-wrapper" id="wrap-2" style="opacity: 0;">
+            <img src="product_pink_1772632331236_transparent.png" class="prod-img floating-2"
+                alt="Queen's Choice Jelly">
+        </div>
+        <div class="prod-wrapper" id="wrap-3" style="opacity: 0;">
+            <img src="product_red_1772632352501_transparent.png" class="prod-img floating-3" alt="Red Ginseng Jelly">
+        </div>
+        <div class="prod-wrapper" id="wrap-4" style="opacity: 0;">
+            <img src="product_purple_1772632372673_transparent.png" class="prod-img floating-4"
+                alt="Black Balloon Flower Jelly">
+        </div>
+    </div>
+
+    <div id="slides-container">
+        <div class="slide flex-center active" id="slide-0">
+            <div class="content">
+                <h1 class="title anim-element">Purevibe</h1>
+                <p class="subtitle anim-element">Redefine Wellness</p>
+            </div>
+            <div class="scroll-indicator">Swipe Down</div>
+        </div>
+
+        <div class="slide flex-left" id="slide-1">
+            <div class="content">
+                <h2 class="prod-tag green-tag anim-element serif">Good Shot<br>Jelly</h2>
+                <p class="desc anim-element">The perfect daily shot of wellness.<br>Nourishing health with naturally
+                    simple ingredients.</p>
+            </div>
+        </div>
+
+        <div class="slide flex-right" id="slide-2">
+            <div class="content text-right">
+                <h2 class="prod-tag pink-tag anim-element serif">Queen's Choice<br>Jelly</h2>
+                <p class="desc anim-element">Empowering your vitality.<br>Combining cutting-edge food science with
+                    premium pomegranate.</p>
+            </div>
+        </div>
+
+        <div class="slide flex-left" id="slide-3">
+            <div class="content">
+                <h2 class="prod-tag red-tag anim-element serif">Red Ginseng<br>Jelly</h2>
+                <p class="desc anim-element">Energize your day.<br>Rooted in South Korea's rich heritage.</p>
+            </div>
+        </div>
+
+        <div class="slide flex-right" id="slide-4">
+            <div class="content text-right">
+                <h2 class="prod-tag purple-tag anim-element serif">Black Balloon<br>Flower Jelly</h2>
+                <p class="desc anim-element">Breathe easier and feel stronger.<br>Centuries of wisdom for your daily
+                    routine.</p>
+            </div>
+        </div>
+
+        <div class="slide flex-center" id="slide-5">
+            <div class="content modern-card" style="max-width: 900px;">
+                <h2 class="anim-element serif"
+                    style="font-size: 3.5rem; color:#fff; line-height:1.2; margin-bottom: 1.5rem;">
+                    Universal Wellness
+                </h2>
+                <div class="anim-element"
+                    style="width: 40px; height: 3px; background: var(--accent); margin: 0 0 2rem 0;"></div>
+                <p class="anim-element desc" style="font-size:1.2rem; margin-bottom: 1.5rem; color: #ccc;">
+                    Born from a dynamic collaboration between South Korea and Indonesia, Purevibe combines cutting-edge
+                    food science with the ancient wisdom of Korean apothecaries.
+                </p>
+                <p class="anim-element desc" style="font-size:1.2rem; color: #ccc;">
+                    We’ve curated powerful hero ingredients like pomegranate, black balloon flower, red ginseng, and
+                    peach for maximum vitality.
+                </p>
+                <div class="anim-element">
+                    <p class="serif"
+                        style="color:var(--accent); font-style:italic; font-size:1.6rem; margin-top:2.5rem; border-left: 3px solid var(--accent); padding-left: 20px;">
+                        Nourishing health with naturally simple and undeniably delicious ingredients.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide flex-center" id="slide-6">
+            <div class="content modern-card" style="max-width: 1000px;">
+                <h2 class="anim-element serif" style="font-size: 3.5rem; margin-bottom: 0.5rem; color: #fff;">Global
+                    Reach
+                </h2>
+                <p class="anim-element" style="color: #999; font-size: 1.2rem;">Trusted by wellness leaders worldwide.
+                </p>
+
+                <div class="partners-grid anim-element"
+                    style="margin-top: 2.5rem; display: flex; flex-wrap: wrap; gap: 15px;">
+                    <div class="partner-logo"
+                        style="flex: 1 1 calc(50% - 15px); padding: 1.2rem; background: rgba(255,255,255,0.03); border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); text-align: center;">
+                        BioTech KR</div>
+                    <div class="partner-logo"
+                        style="flex: 1 1 calc(50% - 15px); padding: 1.2rem; background: rgba(255,255,255,0.03); border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); text-align: center;">
+                        IndoHealth</div>
+                    <div class="partner-logo"
+                        style="flex: 1 1 calc(50% - 15px); padding: 1.2rem; background: rgba(255,255,255,0.03); border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); text-align: center;">
+                        NatureLabs</div>
+                    <div class="partner-logo"
+                        style="flex: 1 1 calc(50% - 15px); padding: 1.2rem; background: rgba(255,255,255,0.03); border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); text-align: center;">
+                        Seoul Org</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide flex-center" id="slide-7">
+            <div class="content modern-card text-left" style="max-width: 1000px; width: 100%;">
+                <h2 class="anim-element serif" style="font-size: 3.5rem; margin-bottom: 0.5rem; color: #fff;">Journal
+                </h2>
+                <p class="anim-element" style="color: #999; font-size: 1.1rem; margin-bottom: 2rem;">Stay updated with
+                    our latest breakthroughs.</p>
+
+                <div class="news-grid anim-element">
+                    <div class="news-item">
+                        <span>Press Release</span>
+                        <h3 class="serif">Launch in Jakarta</h3>
+                        <p>We are thrilled to announce the official launch of our newest jelly stick variants across all
+                            major retail stores.</p>
+                    </div>
+                    <div class="news-item">
+                        <span>Science</span>
+                        <h3 class="serif">The Power of Ginseng</h3>
+                        <p>Discover how our exclusive fermentation process maximizes the absorption of vital nutrients.
+                        </p>
+                    </div>
+                    <div class="news-item">
+                        <span>Company</span>
+                        <h3 class="serif">Sustainability</h3>
+                        <p>Learn about our rigorous new initiatives to ensure 100% recyclable packaging by the end of
+                            the year.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+        const jellies = [
+            document.getElementById('wrap-1'),
+            document.getElementById('wrap-2'),
+            document.getElementById('wrap-3'),
+            document.getElementById('wrap-4')
+        ];
+
+        let currentIndex = 0;
+        let animating = false;
+
+        // Define coordinates directly relative to center using vw and vh strings for x and y
+        const getStates = () => {
+            const m = window.innerWidth <= 768;
+            return [
+                // 0: Hero perfectly fanned around center
+                [
+                    { x: m ? "-18vw" : "-22vw", y: m ? "0vh" : "0vh", r: -25, s: m ? 0.75 : 0.7, o: 0.5, z: 1 },
+                    { x: m ? "-6vw" : "-8vw", y: m ? "-5vh" : "-5vh", r: -10, s: m ? 0.85 : 0.85, o: 0.8, z: 2 },
+                    { x: m ? "6vw" : "8vw", y: m ? "-5vh" : "-5vh", r: 10, s: m ? 0.85 : 0.85, o: 0.8, z: 2 },
+                    { x: m ? "18vw" : "22vw", y: m ? "0vh" : "0vh", r: 25, s: m ? 0.75 : 0.7, o: 0.5, z: 1 }
+                ],
+                // 1: Jelly 1 left text, jelly right (Mobile: top center, others behind)
+                [
+                    { x: m ? "0vw" : "25vw", y: m ? "-18vh" : "5vh", r: m ? 0 : 5, s: m ? 1.4 : 1.25, o: 1, z: 10 },
+                    { x: m ? "-15vw" : "45vw", y: m ? "-20vh" : "20vh", r: m ? -15 : 15, s: m ? 0.8 : 0.6, o: m ? 0.5 : 0.3, z: 1 },
+                    { x: m ? "15vw" : "55vw", y: m ? "-20vh" : "25vh", r: m ? 15 : 25, s: m ? 0.8 : 0.5, o: m ? 0.5 : 0.2, z: 1 },
+                    { x: m ? "25vw" : "65vw", y: m ? "-15vh" : "30vh", r: m ? 25 : 35, s: m ? 0.6 : 0.4, o: m ? 0.3 : 0.1, z: 1 }
+                ],
+                // 2: Jelly 2 right text, jelly left
+                [
+                    { x: m ? "-15vw" : "-45vw", y: m ? "-20vh" : "20vh", r: m ? -15 : -15, s: m ? 0.8 : 0.6, o: m ? 0.5 : 0.3, z: 1 },
+                    { x: m ? "0vw" : "-25vw", y: m ? "-18vh" : "5vh", r: m ? 0 : -5, s: m ? 1.4 : 1.25, o: 1, z: 10 },
+                    { x: m ? "15vw" : "45vw", y: m ? "-20vh" : "20vh", r: m ? 15 : 15, s: m ? 0.8 : 0.6, o: m ? 0.5 : 0.3, z: 1 },
+                    { x: m ? "25vw" : "55vw", y: m ? "-15vh" : "25vh", r: m ? 25 : 25, s: m ? 0.6 : 0.5, o: m ? 0.3 : 0.2, z: 1 }
+                ],
+                // 3: Jelly 3 left text, jelly right
+                [
+                    { x: m ? "-25vw" : "-55vw", y: m ? "-15vh" : "25vh", r: m ? -25 : -25, s: m ? 0.6 : 0.5, o: m ? 0.3 : 0.2, z: 1 },
+                    { x: m ? "-15vw" : "-45vw", y: m ? "-20vh" : "20vh", r: m ? -15 : -15, s: m ? 0.8 : 0.6, o: m ? 0.5 : 0.3, z: 1 },
+                    { x: m ? "0vw" : "25vw", y: m ? "-18vh" : "5vh", r: m ? 0 : 5, s: m ? 1.4 : 1.25, o: 1, z: 10 },
+                    { x: m ? "15vw" : "45vw", y: m ? "-20vh" : "20vh", r: m ? 15 : 15, s: m ? 0.8 : 0.6, o: m ? 0.5 : 0.3, z: 1 }
+                ],
+                // 4: Jelly 4 right text, jelly left
+                [
+                    { x: m ? "-25vw" : "-65vw", y: m ? "-15vh" : "30vh", r: m ? -25 : -35, s: m ? 0.6 : 0.4, o: m ? 0.3 : 0.1, z: 1 },
+                    { x: m ? "-15vw" : "-55vw", y: m ? "-20vh" : "25vh", r: m ? -15 : -25, s: m ? 0.8 : 0.5, o: m ? 0.5 : 0.2, z: 1 },
+                    { x: m ? "15vw" : "-45vw", y: m ? "-20vh" : "20vh", r: m ? 15 : -15, s: m ? 0.8 : 0.6, o: m ? 0.5 : 0.3, z: 1 },
+                    { x: m ? "0vw" : "-25vw", y: m ? "-18vh" : "5vh", r: m ? 0 : -5, s: m ? 1.4 : 1.25, o: 1, z: 10 }
+                ],
+                // 5: Brand Story - Smoothly drop out of view to the bottom
+                [
+                    { x: "-20vw", y: "150vh", r: -40, s: 0.8, o: 0, z: 1 },
+                    { x: "-10vw", y: "150vh", r: -20, s: 0.8, o: 0, z: 1 },
+                    { x: "10vw", y: "150vh", r: 20, s: 0.8, o: 0, z: 1 },
+                    { x: "20vw", y: "150vh", r: 40, s: 0.8, o: 0, z: 1 }
+                ],
+                // 6: Partners - Keep out of view
+                [
+                    { x: "-20vw", y: "150vh", r: -40, s: 0.8, o: 0, z: 1 },
+                    { x: "-10vw", y: "150vh", r: -20, s: 0.8, o: 0, z: 1 },
+                    { x: "10vw", y: "150vh", r: 20, s: 0.8, o: 0, z: 1 },
+                    { x: "20vw", y: "150vh", r: 40, s: 0.8, o: 0, z: 1 }
+                ],
+                // 7: News - Keep out of view
+                [
+                    { x: "-20vw", y: "150vh", r: -40, s: 0.8, o: 0, z: 1 },
+                    { x: "-10vw", y: "150vh", r: -20, s: 0.8, o: 0, z: 1 },
+                    { x: "10vw", y: "150vh", r: 20, s: 0.8, o: 0, z: 1 },
+                    { x: "20vw", y: "150vh", r: 40, s: 0.8, o: 0, z: 1 }
+                ]
+            ];
+        };
+
+        // Initialization
+        function init() {
+            const states = getStates();
+            // Set initial states for Jellies
+            jellies.forEach((j, i) => {
+                gsap.set(j, {
+                    x: states[0][i].x,
+                    y: states[0][i].y,
+                    rotation: states[0][i].r,
+                    scale: states[0][i].s,
+                    opacity: states[0][i].o,
+                    zIndex: states[0][i].z
+                });
+            });
+            // Set initial slide elements
+            gsap.set(slides[0].querySelectorAll('.anim-element'), { y: 0, opacity: 1 });
+        }
+        init();
+
+        const slideBgColors = [
+            "#030303", // 0
+            "#0a1f15", // 1 - green
+            "#2a1118", // 2 - pink
+            "#2d0b0f", // 3 - red
+            "#1a122e", // 4 - purple
+            "#030303", // 5
+            "#000000", // 6
+            "#080808"  // 7
+        ];
+
+        // UI Element Selectors
+        const menuToggle = document.getElementById('menu-toggle');
+        const sidebar = document.getElementById('sidebar');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const backToTopBtn = document.getElementById('back-to-top');
+
+        function gotoSlide(index, direction) {
+            // Determine direction mathematically if none provided by click event
+            if (direction === undefined) {
+                direction = index > currentIndex ? 1 : -1;
+            }
+
+            if (index < 0 || index >= slides.length || animating) return;
+            animating = true;
+
+            const prevSlide = slides[currentIndex];
+            const targetSlide = slides[index];
+
+            const tl = gsap.timeline({
+                onComplete: () => {
+                    prevSlide.classList.remove('active');
+                    targetSlide.classList.add('active');
+                    currentIndex = index;
+                    animating = false;
+
+                    // Show/Hide Back to Top button
+                    if (currentIndex > 0) {
+                        backToTopBtn.classList.add('visible');
+                    } else {
+                        backToTopBtn.classList.remove('visible');
+                    }
+                }
+            });
+
+            // Direction logic: 1 is Scroll Down (next slide moves up from bottom)
+            const yOut = direction > 0 ? -100 : 100;
+            const yIn = direction > 0 ? 100 : -100;
+
+            // Content out
+            const prevEls = prevSlide.querySelectorAll('.anim-element');
+            if (prevEls.length > 0) {
+                tl.to(prevEls, { y: yOut, opacity: 0, duration: 0.8, stagger: 0.05, ease: "power3.inOut" }, 0);
+            }
+            tl.to(prevSlide, { opacity: 0, duration: 0.8, ease: "power3.inOut" }, 0);
+
+            // Prep target slide
+            targetSlide.classList.add('active');
+            gsap.set(targetSlide, { opacity: 1 });
+            const nextEls = targetSlide.querySelectorAll('.anim-element');
+            if (nextEls.length > 0) {
+                gsap.set(nextEls, { y: yIn, opacity: 0 });
+                // Content in
+                tl.to(nextEls, { y: 0, opacity: 1, duration: 1, stagger: 0.1, ease: "power4.out" }, 0.4);
+            } else {
+                tl.to(targetSlide, { opacity: 1, duration: 1, ease: "power4.out" }, 0.4);
+            }
+
+            // Jellies transition
+            const currentStates = getStates();
+            const state = currentStates[index];
+            jellies.forEach((j, i) => {
+                // Apply intense highlight to the active product (Slides 1 to 4 map to jelly index 0 to 3)
+                const img = j.querySelector('.prod-img');
+                if (index > 0 && index < 5 && i === index - 1) {
+                    if (img) img.classList.add('active');
+                } else {
+                    if (img) img.classList.remove('active');
+                }
+
+                tl.to(j, {
+                    x: state[i].x,
+                    y: state[i].y,
+                    rotation: state[i].r,
+                    scale: state[i].s,
+                    opacity: state[i].o,
+                    zIndex: state[i].z,
+                    duration: 1.2,
+                    ease: "power4.inOut"
+                }, 0.1);
+            });
+
+            // Smooth Background shift via GSAP
+            const bgElement = document.getElementById('bg-element');
+            if (bgElement) {
+                tl.to(bgElement, {
+                    backgroundColor: slideBgColors[index] || "#030303",
+                    duration: 1.2,
+                    ease: "power2.inOut"
+                }, 0); // start at the same time as slide content (time 0)
+            }
+
+            // Pagination update
+            dots.forEach((d, i) => {
+                if (i === index) d.classList.add('active');
+                else d.classList.remove('active');
+            });
+
+            // Sidebar active link update
+            navLinks.forEach(link => {
+                if (parseInt(link.dataset.slide) === index) {
+                    link.classList.add('active-link');
+                } else {
+                    link.classList.remove('active-link');
+                }
+            });
+        }
+
+        // Setup Dot Click Navigation
+        dots.forEach((d, i) => {
+            d.addEventListener('click', () => {
+                if (i !== currentIndex && !animating) {
+                    gotoSlide(i, i > currentIndex ? 1 : -1);
+                }
+            });
+        });
+
+        // Setup Sidebar Toggle
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            sidebar.classList.toggle('active');
+        });
+
+        // Setup Sidebar Link Clicks
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault(); // prevent anchor jump
+                const targetIndex = parseInt(link.dataset.slide);
+
+                // Close menu
+                menuToggle.classList.remove('active');
+                sidebar.classList.remove('active');
+
+                if (targetIndex !== currentIndex && !animating) {
+                    gotoSlide(targetIndex);
+                }
+            });
+        });
+
+        // Setup Back to Top Button
+        backToTopBtn.addEventListener('click', () => {
+            if (!animating && currentIndex !== 0) {
+                gotoSlide(0, -1);
+            }
+        });
+
+        // GSAP ScrollTrigger Observer (Scroll sweep detection without default scrollbar)
+        ScrollTrigger.observe({
+            target: window,
+            type: "wheel,touch,pointer",
+            wheelSpeed: -1,
+            onDown: () => gotoSlide(currentIndex - 1, -1), // Swipe Down / Wheel Up
+            onUp: () => gotoSlide(currentIndex + 1, 1),   // Swipe Up / Wheel Down
+            tolerance: 20,
+            preventDefault: true
+        });
+
+    </script>
+</body>
+
+</html>
