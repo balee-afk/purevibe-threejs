@@ -495,27 +495,35 @@
         }
 
         @media (max-width: 768px) {
+            #pagination {
+                right: 1.5vw;
+                transform: translateY(-50%) scale(0.85);
+            }
+
             .title {
-                font-size: 3rem;
+                font-size: 3.5rem;
+                line-height: 1.1;
+                margin-bottom: 1.2rem;
             }
 
             .subtitle {
-                font-size: 0.8rem;
-                letter-spacing: 3px;
-                margin-bottom: 2rem;
+                font-size: 1rem;
+                letter-spacing: 4px;
+                margin-bottom: 2.5rem;
             }
 
             .prod-tag {
-                font-size: 2.2rem;
-                margin-bottom: 1rem;
+                font-size: 2.8rem;
+                margin-bottom: 1.2rem;
             }
 
             p.desc {
-                font-size: 0.95rem;
+                font-size: 1.15rem;
             }
 
             .slide {
-                padding: 0 5vw;
+                padding: 0 4vw 0 2vw;
+                /* Assymetrical padding offsets the right-side dots */
             }
 
             /* Slide 0 adjustments */
@@ -559,8 +567,8 @@
             }
 
             .prod-img {
-                height: 35vh;
-                max-width: 80vw;
+                height: 48vh;
+                max-width: 95vw;
             }
 
             /* Slide 5 Typography */
@@ -884,38 +892,38 @@
             return [
                 // 0: Hero perfectly fanned around center
                 [
-                    { x: m ? "-18vw" : "-22vw", y: m ? "0vh" : "0vh", r: -25, s: m ? 0.75 : 0.7, o: 0.5, z: 1 },
-                    { x: m ? "-6vw" : "-8vw", y: m ? "-5vh" : "-5vh", r: -10, s: m ? 0.85 : 0.85, o: 0.8, z: 2 },
-                    { x: m ? "6vw" : "8vw", y: m ? "-5vh" : "-5vh", r: 10, s: m ? 0.85 : 0.85, o: 0.8, z: 2 },
-                    { x: m ? "18vw" : "22vw", y: m ? "0vh" : "0vh", r: 25, s: m ? 0.75 : 0.7, o: 0.5, z: 1 }
+                    { x: m ? "-18vw" : "-22vw", y: m ? "0vh" : "0vh", r: -25, s: m ? 0.9 : 0.7, o: 0.5, z: 1 },
+                    { x: m ? "-6vw" : "-8vw", y: m ? "-5vh" : "-5vh", r: -10, s: m ? 1.1 : 0.85, o: 0.8, z: 2 },
+                    { x: m ? "6vw" : "8vw", y: m ? "-5vh" : "-5vh", r: 10, s: m ? 1.1 : 0.85, o: 0.8, z: 2 },
+                    { x: m ? "18vw" : "22vw", y: m ? "0vh" : "0vh", r: 25, s: m ? 0.9 : 0.7, o: 0.5, z: 1 }
                 ],
                 // 1: Jelly 1 left text, jelly right (Mobile: top center, others behind)
                 [
-                    { x: m ? "0vw" : "25vw", y: m ? "-18vh" : "5vh", r: m ? 0 : 5, s: m ? 1.4 : 1.25, o: 1, z: 10 },
-                    { x: m ? "-15vw" : "45vw", y: m ? "-20vh" : "20vh", r: m ? -15 : 15, s: m ? 0.8 : 0.6, o: m ? 0.5 : 0.3, z: 1 },
-                    { x: m ? "15vw" : "55vw", y: m ? "-20vh" : "25vh", r: m ? 15 : 25, s: m ? 0.8 : 0.5, o: m ? 0.5 : 0.2, z: 1 },
-                    { x: m ? "25vw" : "65vw", y: m ? "-15vh" : "30vh", r: m ? 25 : 35, s: m ? 0.6 : 0.4, o: m ? 0.3 : 0.1, z: 1 }
+                    { x: m ? "0vw" : "25vw", y: m ? "-22vh" : "5vh", r: m ? 0 : 5, s: m ? 1.8 : 1.25, o: 1, z: 10 },
+                    { x: m ? "-15vw" : "45vw", y: m ? "-25vh" : "20vh", r: m ? -15 : 15, s: m ? 0.9 : 0.6, o: m ? 0.5 : 0.3, z: 1 },
+                    { x: m ? "15vw" : "55vw", y: m ? "-25vh" : "25vh", r: m ? 15 : 25, s: m ? 0.9 : 0.5, o: m ? 0.5 : 0.2, z: 1 },
+                    { x: m ? "25vw" : "65vw", y: m ? "-20vh" : "30vh", r: m ? 25 : 35, s: m ? 0.7 : 0.4, o: m ? 0.3 : 0.1, z: 1 }
                 ],
                 // 2: Jelly 2 right text, jelly left
                 [
-                    { x: m ? "-15vw" : "-45vw", y: m ? "-20vh" : "20vh", r: m ? -15 : -15, s: m ? 0.8 : 0.6, o: m ? 0.5 : 0.3, z: 1 },
-                    { x: m ? "0vw" : "-25vw", y: m ? "-18vh" : "5vh", r: m ? 0 : -5, s: m ? 1.4 : 1.25, o: 1, z: 10 },
-                    { x: m ? "15vw" : "45vw", y: m ? "-20vh" : "20vh", r: m ? 15 : 15, s: m ? 0.8 : 0.6, o: m ? 0.5 : 0.3, z: 1 },
-                    { x: m ? "25vw" : "55vw", y: m ? "-15vh" : "25vh", r: m ? 25 : 25, s: m ? 0.6 : 0.5, o: m ? 0.3 : 0.2, z: 1 }
+                    { x: m ? "-15vw" : "-45vw", y: m ? "-25vh" : "20vh", r: m ? -15 : -15, s: m ? 0.9 : 0.6, o: m ? 0.5 : 0.3, z: 1 },
+                    { x: m ? "0vw" : "-25vw", y: m ? "-22vh" : "5vh", r: m ? 0 : -5, s: m ? 1.8 : 1.25, o: 1, z: 10 },
+                    { x: m ? "15vw" : "45vw", y: m ? "-25vh" : "20vh", r: m ? 15 : 15, s: m ? 0.9 : 0.6, o: m ? 0.5 : 0.3, z: 1 },
+                    { x: m ? "25vw" : "55vw", y: m ? "-20vh" : "25vh", r: m ? 25 : 25, s: m ? 0.7 : 0.5, o: m ? 0.3 : 0.2, z: 1 }
                 ],
                 // 3: Jelly 3 left text, jelly right
                 [
-                    { x: m ? "-25vw" : "-55vw", y: m ? "-15vh" : "25vh", r: m ? -25 : -25, s: m ? 0.6 : 0.5, o: m ? 0.3 : 0.2, z: 1 },
-                    { x: m ? "-15vw" : "-45vw", y: m ? "-20vh" : "20vh", r: m ? -15 : -15, s: m ? 0.8 : 0.6, o: m ? 0.5 : 0.3, z: 1 },
-                    { x: m ? "0vw" : "25vw", y: m ? "-18vh" : "5vh", r: m ? 0 : 5, s: m ? 1.4 : 1.25, o: 1, z: 10 },
-                    { x: m ? "15vw" : "45vw", y: m ? "-20vh" : "20vh", r: m ? 15 : 15, s: m ? 0.8 : 0.6, o: m ? 0.5 : 0.3, z: 1 }
+                    { x: m ? "-25vw" : "-55vw", y: m ? "-20vh" : "25vh", r: m ? -25 : -25, s: m ? 0.7 : 0.5, o: m ? 0.3 : 0.2, z: 1 },
+                    { x: m ? "-15vw" : "-45vw", y: m ? "-25vh" : "20vh", r: m ? -15 : -15, s: m ? 0.9 : 0.6, o: m ? 0.5 : 0.3, z: 1 },
+                    { x: m ? "0vw" : "25vw", y: m ? "-22vh" : "5vh", r: m ? 0 : 5, s: m ? 1.8 : 1.25, o: 1, z: 10 },
+                    { x: m ? "15vw" : "45vw", y: m ? "-25vh" : "20vh", r: m ? 15 : 15, s: m ? 0.9 : 0.6, o: m ? 0.5 : 0.3, z: 1 }
                 ],
                 // 4: Jelly 4 right text, jelly left
                 [
-                    { x: m ? "-25vw" : "-65vw", y: m ? "-15vh" : "30vh", r: m ? -25 : -35, s: m ? 0.6 : 0.4, o: m ? 0.3 : 0.1, z: 1 },
-                    { x: m ? "-15vw" : "-55vw", y: m ? "-20vh" : "25vh", r: m ? -15 : -25, s: m ? 0.8 : 0.5, o: m ? 0.5 : 0.2, z: 1 },
-                    { x: m ? "15vw" : "-45vw", y: m ? "-20vh" : "20vh", r: m ? 15 : -15, s: m ? 0.8 : 0.6, o: m ? 0.5 : 0.3, z: 1 },
-                    { x: m ? "0vw" : "-25vw", y: m ? "-18vh" : "5vh", r: m ? 0 : -5, s: m ? 1.4 : 1.25, o: 1, z: 10 }
+                    { x: m ? "-25vw" : "-65vw", y: m ? "-20vh" : "30vh", r: m ? -25 : -35, s: m ? 0.7 : 0.4, o: m ? 0.3 : 0.1, z: 1 },
+                    { x: m ? "-15vw" : "-55vw", y: m ? "-25vh" : "25vh", r: m ? -15 : -25, s: m ? 0.9 : 0.5, o: m ? 0.5 : 0.2, z: 1 },
+                    { x: m ? "15vw" : "-45vw", y: m ? "-25vh" : "20vh", r: m ? 15 : -15, s: m ? 0.9 : 0.6, o: m ? 0.5 : 0.3, z: 1 },
+                    { x: m ? "0vw" : "-25vw", y: m ? "-22vh" : "5vh", r: m ? 0 : -5, s: m ? 1.8 : 1.25, o: 1, z: 10 }
                 ],
                 // 5: Brand Story - Smoothly drop out of view to the bottom
                 [
